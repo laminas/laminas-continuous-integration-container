@@ -6,7 +6,7 @@ inputs:
     required: true
 outputs:
   tags:
-    description: 'JSON-encoded array containing string tag names.'
+    description: 'Multiline string containing one string tag name per line.'
 
 runs:
   using: 'node12'

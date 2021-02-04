@@ -17,4 +17,4 @@ let tags = [
 ];
 
 core.info(`Tags: ${JSON.stringify(tags)}`);
-core.setOutput('tags', JSON.stringify(tags));
+core.setOutput('tags', tags.join("\n"));
