@@ -1,0 +1,13 @@
+name: 'Create container tag list for current push'
+description: 'Creates a list of container tag names for the current tag'
+inputs:
+  tag-ref:
+    description: 'Git tag ref being created'
+    required: true
+outputs:
+  tags:
+    description: 'JSON-encoded array containing string tag names.'
+
+runs:
+  using: 'node12'
+  main: 'index.js'
