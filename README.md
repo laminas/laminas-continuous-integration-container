@@ -33,5 +33,6 @@ It defines an entrypoint that accepts a single argument, a JSON string. The JSON
 
 ## Tags
 
-- ghcr.io/laminas/laminas-continuous-integration-container:v1 (latest  v1 release)
-- ghcr.io/laminas/laminas-continuous-integration-container:v1.0 (latest  v1.0.x release)
+- ghcr.io/laminas/laminas-continuous-integration-container:0 (latest v0 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:0.1 (latest v0.1.x release)
+- ghcr.io/laminas/laminas-continuous-integration-container:0.1.0 (v0.1.0 release)
