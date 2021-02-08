@@ -110,5 +110,10 @@ checkout
 
 composer_install "${DEPS}" "${PHP}"
 
+if [[ "${COMMAND}" =~ phpunit ]];then
+    echo "Setting up PHPUnit problem matcher"
+    echo "::add-matcher::/etc/laminas-ci/phpunit.json"
+fi
+
 echo "Running ${COMMAND}"
 (cd work ; eval ${COMMAND})

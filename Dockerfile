@@ -10,6 +10,7 @@ RUN apt update \
     && apt install -y software-properties-common \
     && add-apt-repository -y ppa:ondrej/php \
     && apt install -y \
+        wget \
         git \
         jq \
         libzip-dev \
@@ -108,6 +109,10 @@ RUN apt update \
     && update-alternatives --set php /usr/bin/php7.4
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+RUN wget https://raw.githubusercontent.com/shivammathur/setup-php/master/src/configs/phpunit.json \
+    && mkdir -p /etc/laminas-ci \
+    && mv phpunit.json /etc/laminas-ci
 
 RUN composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s $(composer config --global home)/vendor/bin/cs2pr /usr/local/bin/cs2pr
