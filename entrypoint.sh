@@ -112,7 +112,7 @@ composer_install "${DEPS}" "${PHP}"
 
 if [[ "${COMMAND}" =~ phpunit ]];then
     echo "Setting up PHPUnit problem matcher"
-    cp /etc/laminas-ci-phpunit.json $(pwd)/phpunit.json
+    cp /etc/laminas-ci/phpunit.json $(pwd)/phpunit.json
     echo "::add-matcher::phpunit.json"
 fi
 
