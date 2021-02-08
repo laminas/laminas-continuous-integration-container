@@ -63,19 +63,19 @@ function composer_install {
     case $DEPS in
         lowest)
             echo "Installing lowest supported dependencies via Composer"
-            (cd work ; composer update ${COMPOSER_ARGS} --prefer-lowest)
+            composer update ${COMPOSER_ARGS} --prefer-lowest
             ;;
         latest)
             echo "Installing latest supported dependencies via Composer"
-            (cd work ; composer update ${COMPOSER_ARGS})
+            composer update ${COMPOSER_ARGS}
             ;;
         *)
             echo "Installing dependencies as specified in lockfile via Composer"
-            (cd work ; composer install ${COMPOSER_ARGS})
+            composer install ${COMPOSER_ARGS}
             ;;
     esac
 
-    (cd work ; composer show)
+    composer show
 }
 
 if [ $# -ne 1 ]; then
@@ -130,4 +130,4 @@ if [[ "${COMMAND}" =~ phpunit ]];then
 fi
 
 echo "Running ${COMMAND}"
-(cd work ; eval ${COMMAND})
+eval ${COMMAND}
