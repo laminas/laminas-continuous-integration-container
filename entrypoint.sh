@@ -125,11 +125,14 @@ composer_install "${DEPS}" "${PHP}"
 
 if [[ "${COMMAND}" =~ phpunit ]];then
     echo "Setting up PHPUnit problem matcher"
-    cp /etc/laminas-ci/phpunit.json $(pwd)/phpunit.json
+    cp /etc/laminas-ci/problem-matcher/phpunit.json $(pwd)/phpunit.json
     echo "::add-matcher::phpunit.json"
 fi
 
 if [[ "${COMMAND}" =~ markdownlint ]];then
+    echo "Setting up markdownlint problem matcher"
+    cp /etc/laminas-ci/problem-matcher/markdownlint.json $(pwd)/markdownlint-matcher.json
+    echo "::add-matcher::markdownlint-matcher.json"
     if [ ! -f ".markdownlint.json" ];then
         echo "Installing markdownlint configuration"
         cp /etc/laminas-ci/markdownlint.json .markdownlint.json
