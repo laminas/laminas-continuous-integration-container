@@ -17,15 +17,19 @@ function help {
 
 function checkout {
     local REF=
+    local LOCAL_BRANCH=
     case $GITHUB_EVENT_NAME in
         pull_request)
             REF=$GITHUB_REF
+            LOCAL_BRANCH=$GITHUB_HEAD_REF
             ;;
         push)
             REF=$GITHUB_REF
+            LOCAL_BRANCH=$GITHUB_REF
             ;;
         tag)
             REF=$GITHUB_REF
+            LOCAL_BRANCH=$GITHUB_REF
             ;;
         *)
             echo "Unable to handle events of type $GITHUB_EVENT_NAME; aborting"
@@ -33,9 +37,17 @@ function checkout {
     esac
 
     echo "Cloning repository"
-    git clone https://github.com/"${GITHUB_REPOSITORY}" work
-    echo "Checking out ref ${REF}"
-    (cd work ; git checkout $REF)
+    git clone https://github.com/"${GITHUB_REPOSITORY}" .
+
+    if [[ "$REF" == "$LOCAL_BRANCH" ]];then
+        echo "Checking out ref ${REF}"
+        git checkout $REF
+    else
+        echo "Fetching ref ${REF}"
+        git fetch origin $REF:${GITHUB_HEAD_REF}
+        echo "Checking out to ${GITHUB_HEAD_REF}"
+        git checkout $GITHUB_HEAD_REF
+    fi
 }
 
 function composer_install {
