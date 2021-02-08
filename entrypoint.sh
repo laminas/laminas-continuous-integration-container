@@ -129,5 +129,12 @@ if [[ "${COMMAND}" =~ phpunit ]];then
     echo "::add-matcher::phpunit.json"
 fi
 
+if [[ "${COMMAND}" =~ markdownlint ]];then
+    if [ ! -f ".markdownlint.json" ];then
+        echo "Installing markdownlint configuration"
+        cp /etc/laminas-ci/markdownlint.json .markdownlint.json
+    fi
+fi
+
 echo "Running ${COMMAND}"
 eval ${COMMAND}

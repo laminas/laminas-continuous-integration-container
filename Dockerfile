@@ -12,6 +12,8 @@ RUN apt update \
     && apt install -y \
         wget \
         git \
+        python3-pip \
+        npm \
         jq \
         libzip-dev \
         zip \
@@ -106,13 +108,18 @@ RUN apt update \
         php8.0-xsl \
         php8.0-zip \
     && apt clean \
-    && update-alternatives --set php /usr/bin/php7.4
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+    && update-alternatives --set php /usr/bin/php7.4 \
+    && npm install -g markdownlint-cli2 \
+    && ln -s /usr/local/bin/markdownlint-cli2 /usr/local/bin/markdownlint \
+    && pip3 install yamllint
 
 RUN mkdir -p /etc/laminas-ci \
     && cd /etc/laminas-ci \
     && wget https://raw.githubusercontent.com/shivammathur/setup-php/master/src/configs/phpunit.json
+
+ADD markdownlint.json /etc/laminas-ci/markdownlint.json
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s $(composer config --global home)/vendor/bin/cs2pr /usr/local/bin/cs2pr
