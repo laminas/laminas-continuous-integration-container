@@ -110,9 +110,9 @@ RUN apt update \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-RUN wget https://raw.githubusercontent.com/shivammathur/setup-php/master/src/configs/phpunit.json \
-    && mkdir -p /etc/laminas-ci \
-    && mv phpunit.json /etc/laminas-ci
+RUN mkdir -p /etc/laminas-ci \
+    && cd /etc/laminas-ci \
+    && wget https://raw.githubusercontent.com/shivammathur/setup-php/master/src/configs/phpunit.json
 
 RUN composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s $(composer config --global home)/vendor/bin/cs2pr /usr/local/bin/cs2pr
