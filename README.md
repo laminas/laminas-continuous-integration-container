@@ -17,8 +17,6 @@ It builds off the ubuntu:focal image, installs the [Sury PHP repository](https:/
 - xsl
 - zip
 
-It also installs [Composer](https://getcomposer.org) (v2), as well as the [cs2pr](https://github.com/staabm/annotate-pull-request-from-checkstyle) tool.
-
 It defines an entrypoint that accepts a single argument, a JSON string. The JSON string should contain the following elements:
 
 - command: (string; required) the command to run (e.g., `./vendor/bin/phpunit`)
@@ -31,8 +29,30 @@ It defines an entrypoint that accepts a single argument, a JSON string. The JSON
 - dependencies: (string; optional) the dependency set to run against: lowest, locked, or latest.
   If not provided, "locked" is used.
 
+## Other tools available
+
+The container provides the following tools:
+
+- Composer (v2 release)
+
+- [cs2pr](https://github.com/staabm/annotate-pull-request-from-checkstyle), which creates PR annotations from checkstyle output. If a tool you are using, such as `phpcs`, provides checkstyle output, you can pipe it to `cs2pr` to create PR annotations from errors/warnings/etc. raised.
+
+- A `markdownlint` binary, via the [DavidAnson/markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) package.
+  A default configuration is provided that disables the following rules:
+
+  - MD013 (line-length)
+  - MD014 (dollar signs used before commands without showing output)
+  - MD024 (duplicate header)
+  - MD028 (blank line inside block quote)
+  - MD034 (bare URLs)
+
+  Consumers can provide their own rules via a [.markdownlint.json](https://github.com/DavidAnson/markdownlint-cli2#markdownlintjsonc-or-markdownlintjson) file.
+
+- A `yamllint` binary, via the [adrienverge/yamllint](https://github.com/adrienverge/yamllint) package.
+
+
 ## Tags
 
 - ghcr.io/laminas/laminas-continuous-integration-container:0 (latest v0 release)
 - ghcr.io/laminas/laminas-continuous-integration-container:0.1 (latest v0.1.x release)
-- ghcr.io/laminas/laminas-continuous-integration-container:0.1.0 (v0.1.0 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:0.1.9 (v0.1.9 release)
