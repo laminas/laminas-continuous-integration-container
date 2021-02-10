@@ -142,4 +142,4 @@ fi
 chown -R testuser .
 
 echo "Running ${COMMAND}"
-sudo -u testuser ${COMMAND}
+sudo -u testuser /bin/bash -c ${COMMAND}
