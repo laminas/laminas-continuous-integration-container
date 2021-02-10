@@ -10,12 +10,13 @@ RUN apt update \
     && apt install -y software-properties-common \
     && add-apt-repository -y ppa:ondrej/php \
     && apt install -y \
-        wget \
         git \
-        yamllint \
-        npm \
         jq \
         libzip-dev \
+        npm \
+        sudo \
+        wget \
+        yamllint \
         zip \
         php5.6-cli \
         php5.6-bz2 \
@@ -125,5 +126,7 @@ RUN composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s $(composer config --global home)/vendor/bin/cs2pr /usr/local/bin/cs2pr
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN useradd -ms /bin/bash testuser
 
 ENTRYPOINT ["entrypoint.sh"]

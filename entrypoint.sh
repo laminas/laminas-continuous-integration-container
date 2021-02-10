@@ -139,5 +139,7 @@ if [[ "${COMMAND}" =~ markdownlint ]];then
     fi
 fi
 
+chown -R testuser .
+
 echo "Running ${COMMAND}"
-eval ${COMMAND}
+sudo -u testuser ${COMMAND}
