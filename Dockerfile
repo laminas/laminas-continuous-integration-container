@@ -12,7 +12,7 @@ RUN apt update \
     && apt install -y \
         wget \
         git \
-        python3-pip \
+        yamllint \
         npm \
         jq \
         libzip-dev \
@@ -110,8 +110,7 @@ RUN apt update \
     && apt clean \
     && update-alternatives --set php /usr/bin/php7.4 \
     && npm install -g markdownlint-cli2 \
-    && ln -s /usr/local/bin/markdownlint-cli2 /usr/local/bin/markdownlint \
-    && pip3 install yamllint
+    && ln -s /usr/local/bin/markdownlint-cli2 /usr/local/bin/markdownlint
 
 RUN mkdir -p /etc/laminas-ci/problem-matcher \
     && cd /etc/laminas-ci/problem-matcher \
