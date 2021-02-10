@@ -53,6 +53,6 @@ The container provides the following tools:
 
 ## Tags
 
-- ghcr.io/laminas/laminas-continuous-integration-container:0 (latest v0 release)
-- ghcr.io/laminas/laminas-continuous-integration-container:0.1 (latest v0.1.x release)
-- ghcr.io/laminas/laminas-continuous-integration-container:0.1.9 (v0.1.9 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1 (latest v1 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.0 (latest v1.0.x release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.0.0 (v1.0.0 release)
