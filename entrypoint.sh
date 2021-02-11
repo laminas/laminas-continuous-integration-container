@@ -22,14 +22,15 @@ function checkout {
         pull_request)
             REF=$GITHUB_REF
             LOCAL_BRANCH=$GITHUB_HEAD_REF
+            BASE_BRANCH=$GITHUB_BASE_REF
             ;;
         push)
-            REF=$GITHUB_REF
-            LOCAL_BRANCH=$GITHUB_REF
+            REF=${GITHUB_REF/refs\/heads\//}
+            LOCAL_BRANCH=${REF}
             ;;
         tag)
-            REF=$GITHUB_REF
-            LOCAL_BRANCH=$GITHUB_REF
+            REF=${GITHUB_REF/refs\/tags\//}
+            LOCAL_BRANCH=${REF}
             ;;
         *)
             echo "Unable to handle events of type $GITHUB_EVENT_NAME; aborting"
@@ -43,6 +44,8 @@ function checkout {
         echo "Checking out ref ${REF}"
         git checkout $REF
     else
+        echo "Checking out branch ${BASE_BRANCH}"
+        git checkout ${BASE_BRANCH}
         echo "Fetching ref ${REF}"
         git fetch origin $REF:${GITHUB_HEAD_REF}
         echo "Checking out to ${GITHUB_HEAD_REF}"
