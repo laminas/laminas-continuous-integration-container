@@ -6,6 +6,8 @@ LABEL "repository"="http://github.com/laminas/laminas-continuous-integration-con
 LABEL "homepage"="http://github.com/laminas/laminas-continuous-integration-container"
 LABEL "maintainer"="https://github.com/laminas/technical-steering-committee/"
 
+ENV COMPOSER_HOME=/usr/local/share/composer
+
 RUN apt update \
     && apt install -y software-properties-common \
     && add-apt-repository -y ppa:ondrej/php \
@@ -123,7 +125,6 @@ ADD markdownlint.json /etc/laminas-ci/markdownlint.json
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN mkdir -p /usr/local/share/composer \
-    && export COMPOSER_HOME=/usr/local/share/composer \
     && composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s /usr/local/share/composer/vendor/bin/cs2pr /usr/local/bin/cs2pr
 
