@@ -122,8 +122,10 @@ ADD markdownlint.json /etc/laminas-ci/markdownlint.json
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-RUN composer global require staabm/annotate-pull-request-from-checkstyle \
-    && ln -s $(composer config --global home)/vendor/bin/cs2pr /usr/local/bin/cs2pr
+RUN mkdir -p /usr/local/share/composer \
+    && export COMPOSER_HOME=/usr/local/share/composer \
+    && composer global require staabm/annotate-pull-request-from-checkstyle \
+    && ln -s /usr/local/share/composer/vendor/bin/cs2pr /usr/local/bin/cs2pr
 
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 
