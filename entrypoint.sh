@@ -111,6 +111,7 @@ DEPS=$(echo "${JOB}" | jq -r '.dependencies')
 
 if [[ "${EXTENSIONS}" != "" ]];then
     echo "Installing extensions"
+    apt update
     apt install -y ${EXTENSIONS}
 fi
 
