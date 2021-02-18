@@ -112,6 +112,34 @@ fi
 
 If you need access to the list of extensions or php.ini directives, you should likely write a script in PHP or node to do so.
 
+## Using the container locally to run tests
+
+The [standard Laminas Continuous Integration workflow](https://gist.github.com/weierophinney/9decd19f76b7d9745c6559074053fa65) defines one job using the laminas-ci-matrix-action to create the matrix, and defines another job to run the various jobs in the matrix that consumes it.
+Unfortunately, as of this writing, tools like [nektos/act](https://github.com/nektos/act) are unable to work with job/step dependencies, nor with workflow metadata expressions, meaning you cannot run the full suite at once.
+
+What you _can_ do, however, is run individual jobs.
+
+First, pull the container locally:
+
+```bash
+$ docker pull ghcr.io/laminas/laminas-continuous-integration-container:1
+```
+
+Once you have pulled it, you can run individual jobs.
+The tricks to remember are:
+
+- You need to set bind the package directory as a volume.
+- You need to set the container WORKDIR to that volume.
+- You need to provide the job JSON.
+
+As an example, if you wanted to run the CS checks under PHP 7.4 using locked dependencies, you could do something like the following:
+
+```bash
+$ docker run -v $(realpath .):/github/workspace -w=/github/workspace laminas-check-runner:latest '{"php":"7.4","deps":"locked","extensions":[],"ini":["memory_limit=-1"],"command":"./vendor/bin/phpcs"}'
+```
+
+The trick to remember: the job JSON should generally be in single quotes, to allow the `"` characters used to delimit properties and strings in the JSON to not cause interpolation issues.
+
 ## Tags
 
 - ghcr.io/laminas/laminas-continuous-integration-container:1 (latest v1 release)
