@@ -115,5 +115,5 @@ If you need access to the list of extensions or php.ini directives, you should l
 ## Tags
 
 - ghcr.io/laminas/laminas-continuous-integration-container:1 (latest v1 release)
-- ghcr.io/laminas/laminas-continuous-integration-container:1.0 (latest v1.0.x release)
-- ghcr.io/laminas/laminas-continuous-integration-container:1.0.0 (v1.0.0 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.1 (latest v1.1.x release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.1.0 (v1.1.0 release)
