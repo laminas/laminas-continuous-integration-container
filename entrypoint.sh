@@ -145,5 +145,25 @@ fi
 
 chown -R testuser .
 
+# Is there a pre-run script available?
+if [ -x ".laminas-ci/pre-run.sh" ];then
+    echo "Executing pre-run commands from .laminas-ci/pre-run.sh"
+    ./.laminas-ci/pre-run.sh testuser "${PWD}" "${JOB}"
+fi
+
+# Disable exit-on-non-zero flag so we can run post-commands
+set +e
+
 echo "Running ${COMMAND}"
 sudo -u testuser /bin/bash -c "${COMMAND}"
+STATUS=$?
+
+set -e
+
+# Is there a post-run script available?
+if [ -x ".laminas-ci/post-run.sh" ];then
+    echo "Executing post-run commands from .laminas-ci/post-run.sh"
+    ./.laminas-ci/post-run.sh "${STATUS}" testuser "${PWD}" "${JOB}"
+fi
+
+exit ${STATUS}

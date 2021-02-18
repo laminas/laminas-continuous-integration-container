@@ -50,6 +50,67 @@ The container provides the following tools:
 
 - A `yamllint` binary, via the [adrienverge/yamllint](https://github.com/adrienverge/yamllint) package.
 
+- The [jq](https://stedolan.github.io/jq/) command, a CLI JSON processor.
+
+## Pre/Post commands
+
+Some packages may require additional setup steps: setting up a web server to test an HTTP client, seeding a database or cache service, etc.
+Other times, you may want to do additional reporting, particularly if the QA command failed.
+
+To enable this, you may create one or both of the following files in your package:
+
+- `.laminas-ci/pre-run.sh`
+- `.laminas-ci/post-run.sh`
+
+(Note: the files MUST be executable to be consumed!)
+
+These run immediately before and after the QA command, respectively.
+The `.laminas-ci/pre-run.sh` command will receive the following arguments:
+
+- `$1`: the user the QA command will run under
+- `$2`: the WORKDIR path
+- `$3`: the `$JOB` passed to the entrypoint (see above)
+
+The `.laminas-ci/post-run.sh` command will receive these arguments:
+
+- `$1`: the exit status of the QA command
+- `$2`: the user the QA command will run under
+- `$3`: the WORKDIR path
+- `$4`: the `$JOB` passed to the entrypoint (see above)
+
+### Parsing the $JOB
+
+You may want to grab elements of the `$JOB` argument in order to branch logic.
+Generally speaking, you can use the [jq](https://stedolan.github.io/jq/) command to get at this data.
+As an example, to get the PHP version:
+
+```bash
+JOB=$3
+PHP_VERSION=$(echo "${JOB}" | jq -r '.php')
+```
+
+If you want to conditionally skip setup based on the command (in this case, exiting early if the command to run is not phpunit):
+
+```bash
+JOB=$3
+COMMAND=$(echo "${JOB}" | jq -r '.command')
+if [[ ! ${COMMAND} =~ phpunit ]];then
+    exit 0
+fi
+```
+
+Perhaps after running a job against locked dependencies, you want to see if newer versions are available:
+
+```bash
+JOB=$3
+DEPS=$(echo "${JOB}" | jq -r '.dependencies')
+if [[ "${DEPS}" != "locked" ]];then
+    exit 0
+fi
+# check for newer versions...
+```
+
+If you need access to the list of extensions or php.ini directives, you should likely write a script in PHP or node to do so.
 
 ## Tags
 
