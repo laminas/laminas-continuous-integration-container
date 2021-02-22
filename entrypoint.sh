@@ -129,18 +129,27 @@ INI=$(echo "${JOB}" | jq -r '.ini | join("\n")')
 DEPS=$(echo "${JOB}" | jq -r '.dependencies')
 
 if [[ "${EXTENSIONS}" != "" ]];then
+	ENABLE_SQLSRV=false
 	if [[ "${EXTENSIONS}" =~ sqlsrv ]];then
 		if [[ ! ${PHP} =~ (7.3|7.4|8.0) ]];then
 			echo "Skipping enabling of sqlsrv extensions; not supported on PHP < 7.3"
 		else
-			echo "Enabling sqlsrv extensions"
-			phpenmod -v ${PHP} -s ALL sqlsrv
+			ENABLE_SQLSRV=true
 		fi
 		EXTENSIONS=$(echo ${EXTENSIONS} | sed -E -e 's/php[0-9.]+-(pdo[_-]){0,1}sqlsrv/ /g' | sed -E -e 's/\s{2,}/ /g')
 	fi
+
     echo "Installing extensions: ${EXTENSIONS}"
     apt update
     apt install -y ${EXTENSIONS}
+
+	if [[ "${ENABLE_SQLSRV}" == "true" ]];then
+		echo "Enabling sqlsrv extensions"
+		phpenmod -v ${PHP} -s ALL sqlsrv
+	fi
+
+	echo "Installed extensions:"
+	php -m
 fi
 
 if [[ "${INI}" != "" ]];then
