@@ -147,9 +147,6 @@ if [[ "${EXTENSIONS}" != "" ]];then
 		echo "Enabling sqlsrv extensions"
 		phpenmod -v ${PHP} -s ALL sqlsrv
 	fi
-
-	echo "Installed extensions:"
-	php -m
 fi
 
 if [[ "${INI}" != "" ]];then
@@ -159,6 +156,10 @@ fi
 
 echo "Marking PHP ${PHP} as configured default"
 update-alternatives --set php /usr/bin/php${PHP}
+
+echo "PHP version: $(php --version)"
+echo "Installed extensions:"
+php -m
 
 checkout
 
