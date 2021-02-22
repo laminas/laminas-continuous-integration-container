@@ -150,5 +150,5 @@ The trick to remember: the job JSON should generally be in single quotes, to all
 ## Tags
 
 - ghcr.io/laminas/laminas-continuous-integration-container:1 (latest v1 release)
-- ghcr.io/laminas/laminas-continuous-integration-container:1.1 (latest v1.1.x release)
-- ghcr.io/laminas/laminas-continuous-integration-container:1.1.0 (v1.1.0 release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.2 (latest v1.2.x release)
+- ghcr.io/laminas/laminas-continuous-integration-container:1.2.0 (v1.2.0 release)
