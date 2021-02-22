@@ -52,6 +52,13 @@ The container provides the following tools:
 
 - The [jq](https://stedolan.github.io/jq/) command, a CLI JSON processor.
 
+## Additional extensions
+
+Some extensions are not available via the sury repository.
+The following is a list of additional extensions that are immediately available (without requiring invoking `pecl` in a `pre-run.sh` script), at the specified versions:
+
+- sqlsrv and pdo_sqlsrv: 5.9.0
+
 ## Pre/Post commands
 
 Some packages may require additional setup steps: setting up a web server to test an HTTP client, seeding a database or cache service, etc.
