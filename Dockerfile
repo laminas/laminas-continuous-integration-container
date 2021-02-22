@@ -9,9 +9,11 @@ LABEL "maintainer"="https://github.com/laminas/technical-steering-committee/"
 ENV COMPOSER_HOME=/usr/local/share/composer
 
 RUN apt update \
-    && apt install -y software-properties-common \
+    && apt install -y software-properties-common curl \
+    && (curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -) \
     && add-apt-repository -y ppa:ondrej/php \
-    && apt install -y \
+    && add-apt-repository -y https://packages.microsoft.com/ubuntu/20.04/prod \
+    && ACCEPT_EULA=Y apt install -y \
         git \
         jq \
         libzip-dev \
@@ -20,6 +22,7 @@ RUN apt update \
         wget \
         yamllint \
         zip \
+        msodbcsql17 \
         php5.6-cli \
         php5.6-bz2 \
         php5.6-curl \
@@ -114,6 +117,20 @@ RUN apt update \
     && update-alternatives --set php /usr/bin/php7.4 \
     && npm install -g markdownlint-cli2 \
     && ln -s /usr/local/bin/markdownlint-cli2 /usr/local/bin/markdownlint
+
+# Install sqlsrv modules for PHP 7.3 - 8.0 (none available on Ubuntu 2.0.4 prior to that)
+RUN (curl -L https://github.com/microsoft/msphpsql/releases/download/v5.9.0/Ubuntu2004-7.3.tar | tar xf - --strip-components=1 Ubuntu2004-7.3/php_pdo_sqlsrv_73_nts.so Ubuntu2004-7.3/php_sqlsrv_73_nts.so) \
+    && (curl -L https://github.com/microsoft/msphpsql/releases/download/v5.9.0/Ubuntu2004-7.4.tar | tar xf - --strip-components=1 Ubuntu2004-7.4/php_pdo_sqlsrv_74_nts.so Ubuntu2004-7.4/php_sqlsrv_74_nts.so) \
+    && (curl -L https://github.com/microsoft/msphpsql/releases/download/v5.9.0/Ubuntu2004-8.0.tar | tar xf - --strip-components=1 Ubuntu2004-8.0/php_pdo_sqlsrv_80_nts.so Ubuntu2004-8.0/php_sqlsrv_80_nts.so) \
+    && mv php_pdo_sqlsrv_73_nts.so $(php7.3 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/pdo_sqlsrv.so \
+    && mv php_sqlsrv_73_nts.so $(php7.3 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/sqlsrv.so \
+    && mv php_pdo_sqlsrv_74_nts.so $(php7.4 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/pdo_sqlsrv.so \
+    && mv php_sqlsrv_74_nts.so $(php7.4 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/sqlsrv.so \
+    && mv php_pdo_sqlsrv_80_nts.so $(php8.0 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/pdo_sqlsrv.so \
+    && mv php_sqlsrv_80_nts.so $(php8.0 -i | grep -P '^extension_dir' | sed -E -e 's/^extension_dir\s+=>\s+\S+\s+=>\s+(.*)$/\1/')/sqlsrv.so 
+COPY sqlsrv.ini /etc/php/7.3/mods-available/sqlsrv.ini
+COPY sqlsrv.ini /etc/php/7.4/mods-available/sqlsrv.ini
+COPY sqlsrv.ini /etc/php/8.0/mods-available/sqlsrv.ini
 
 RUN mkdir -p /etc/laminas-ci/problem-matcher \
     && cd /etc/laminas-ci/problem-matcher \
