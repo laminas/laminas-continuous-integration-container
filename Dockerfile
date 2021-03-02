@@ -137,7 +137,7 @@ RUN mkdir -p /etc/laminas-ci/problem-matcher \
     && wget https://raw.githubusercontent.com/shivammathur/setup-php/master/src/configs/phpunit.json \
     && wget -O markdownlint.json https://raw.githubusercontent.com/xt0rted/markdownlint-problem-matcher/main/.github/problem-matcher.json
 
-ADD markdownlint.json /etc/laminas-ci/markdownlint.json
+COPY markdownlint.json /etc/laminas-ci/markdownlint.json
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
@@ -145,7 +145,7 @@ RUN mkdir -p /usr/local/share/composer \
     && composer global require staabm/annotate-pull-request-from-checkstyle \
     && ln -s /usr/local/share/composer/vendor/bin/cs2pr /usr/local/bin/cs2pr
 
-ADD entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN useradd -ms /bin/bash testuser
 
